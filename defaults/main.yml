@@ -1,7 +1,7 @@
 ---
 # defaults file for pandorafms_console
 
-pandorafms_console_do_initial_configuration: no
+pandorafms_console_skip_initial_configuration: false
 pandorafms_console_version: null
 pandorafms_console_homeurl: /pandora_console
 pandorafms_console_homeurl_static: /pandora_console

@@ -22,22 +22,27 @@ control 'variables' do
 end
 
 control 'apps' do
-
   describe package(pc_pkgname) do
     it { should be_installed }
   end
-
   describe package('php') do
     it { should be_installed }
   end
-
   describe command('selenese-runner --help') do
     its('stdout') { should match /Selenese Runner/ }
   end
 end
 
-control 'php-version' do
+control 'pandorafms_console-version' do
+  only_if('pandorafms_console_version is specified') do
+    not pc_version.nil?
+  end
+  describe package(pc_pkgname) do
+    its('version') { should cmp = pc_version }
+  end
+end
 
+control 'php-version' do
   only_if('Pandora FMS > 7.0NG.728') do
     pc_version.nil? or package(pc_pkgname).version >= "7.0NG.728" 
   end
