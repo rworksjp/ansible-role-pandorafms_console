@@ -1,0 +1,84 @@
+---
+# 
+- name: Ensure PyMySQL or MySQL-python is installed
+  package:
+    name: '{{ pandorafms_console_mysql_python_package | default(mandatory) }}'
+    state: present
+
+- name: Ensure Pandora FMS database exists
+  mysql_db:
+    name: '{{ pandorafms_dbname }}'
+    login_user: '{{ pandorafms_db_privileged_user_name }}'
+    login_password: '{{ pandorafms_db_privileged_user_password | default(omit) }}'
+    login_host: '{{ pandorafms_dbhost }}'
+    login_port: '{{ pandorafms_dbport | default(omit) }}'
+  register: pandora_db_present
+
+- name: Ensure Pandora FMS db schema and initial data are imported
+  mysql_db:
+    name: '{{ pandorafms_dbname }}'
+    state: import
+    encoding: latin1
+    target: '{{ item }}'
+    login_user: '{{ pandorafms_db_privileged_user_name }}'
+    login_password: '{{ pandorafms_db_privileged_user_password | default(omit) }}'
+    login_host: '{{ pandorafms_dbhost }}'
+    login_port: '{{ pandorafms_dbport | default(omit) }}'
+  when: pandora_db_present.changed
+  loop:
+    - '{{ pandorafms_console_docroot }}/pandoradb.sql'
+    - '{{ pandorafms_console_docroot }}/pandoradb_data.sql'
+  environment:
+    LANG: C
+    LC_ALL: C
+
+- name: Ensure database user for Pandora FMS exists
+  mysql_user:
+    name: '{{ pandorafms_dbuser }}'
+    password: '{{ pandorafms_dbpass }}'
+    priv: '*.*:USAGE/{{ pandorafms_dbname }}.*:ALL'
+    login_user: '{{ pandorafms_db_privileged_user_name }}'
+    login_password: '{{ pandorafms_db_privileged_user_password | default(omit) }}'
+    login_host: '{{ pandorafms_dbhost }}'
+    login_port: '{{ pandorafms_dbport | default(omit) }}'
+
+- name: Ensure libselinux-python package is installed
+  package:
+    name: libselinux-python
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version is version("6", "<=")
+
+- name: Create config.php from config.inc.php if absent
+  copy:
+    remote_src: yes
+    src: '{{ pandorafms_console_docroot }}/include/config.inc.php'
+    dest: '{{ pandorafms_console_docroot }}/include/config.php'
+    force: no
+    owner: '{{ pandorafms_console_www_user | default(mandatory) }}'
+    group: '{{ pandorafms_console_www_group | default(mandatory) }}'
+    mode: 0600
+
+- name: Insert config to top of config.php
+  blockinfile:
+    path: '{{ pandorafms_console_docroot }}/include/config.php'
+    insertbefore: '^<\?php'
+    validate: 'php -l %s'
+    owner: '{{ pandorafms_console_www_user | default(mandatory) }}'
+    group: '{{ pandorafms_console_www_group | default(mandatory) }}'
+    mode: 0600
+    marker: '<?php /* {mark} ANSIBLE MANAGED BLOCK */ ?>'
+    block: |
+      <?php
+      		$config["dbtype"] = "mysql"; //DB type (mysql, postgresql...in future others)
+      		$config["dbname"]="{{pandorafms_dbname}}";	// MySQL DataBase name
+      		$config["dbuser"]="{{pandorafms_dbuser}}";	// DB User
+      		$config["dbpass"]="{{pandorafms_dbpass}}";	// DB Password
+      		$config["dbhost"]="{{pandorafms_dbhost}}";	// DB Host
+      		$config["homedir"]="{{pandorafms_console_docroot}}";	// Config homedir
+      		$config["homeurl"]="{{pandorafms_console_homeurl}}";			// Base URL
+      		$config["homeurl_static"]="{{pandorafms_console_homeurl_static}}";		// Don't  delete
+      ?>
+
+- name: Ensure install.php not exist
+  file:
+    path: '{{ pandorafms_console_docroot }}/install.php'
+    state: absent

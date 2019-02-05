@@ -1,0 +1,307 @@
+{
+  "id": "54b93049-3f5b-4aff-93ca-38b504f84fc1",
+  "version": "2.0",
+  "name": "pandorafms_console role test",
+  "url": "http://127.0.0.1",
+  "tests": [{
+    "id": "0ba474c0-096a-40ee-b201-812139a0d44b",
+    "name": "pandorafms_console role test",
+    "commands": [{
+      "id": "cdba7951-9a18-451f-8f38-83bc93ddfb2a",
+      "comment": "",
+      "command": "open",
+      "target": "/pandora_console/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "96195793-9ba6-4efa-a970-06413a233b3f",
+      "comment": "",
+      "command": "assertTitle",
+      "target": "Pandora FMS - the Flexible Monitoring System",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f919724a-26f8-48d2-ab38-8366e75040a6",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=span:nth-child(3)",
+      "targets": [
+        ["css=span:nth-child(3)", "css:finder"],
+        ["css=span", "css"],
+        ["xpath=//div[@id='login_body']/div[2]/div/form/div/a/span", "xpath:idRelative"],
+        ["xpath=//span", "xpath:position"]
+      ],
+      "value": "Community edition"
+    }, {
+      "id": "b0b032d7-6665-4eec-befb-6ea86cba634a",
+      "comment": "",
+      "command": "type",
+      "target": "id=nick",
+      "targets": [
+        ["id=nick", "id"],
+        ["name=nick", "name"],
+        ["css=#nick", "css:finder"],
+        ["css=#nick", "css"],
+        ["xpath=//input[@id='nick']", "xpath:attributes"],
+        ["xpath=//div[@id='login_body']/div[2]/div/form/div[2]/input", "xpath:idRelative"],
+        ["xpath=//input", "xpath:position"]
+      ],
+      "value": "admin"
+    }, {
+      "id": "efdd87eb-5ed4-4f4f-9b4a-b2c34769e525",
+      "comment": "",
+      "command": "type",
+      "target": "id=pass",
+      "targets": [
+        ["id=pass", "id"],
+        ["name=pass", "name"],
+        ["css=#pass", "css:finder"],
+        ["css=#pass", "css"],
+        ["xpath=//input[@id='pass']", "xpath:attributes"],
+        ["xpath=//div[@id='login_body']/div[2]/div/form/div[3]/input", "xpath:idRelative"],
+        ["xpath=//div[3]/input", "xpath:position"]
+      ],
+      "value": "pandora"
+    }, {
+      "id": "72ed8e3d-b075-46c8-bb5a-d89e8c91c5b9",
+      "comment": "",
+      "command": "click",
+      "target": "id=submit-login_button",
+      "targets": [
+        ["id=submit-login_button", "id"],
+        ["name=login_button", "name"],
+        ["css=#submit-login_button", "css:finder"],
+        ["css=#submit-login_button", "css"],
+        ["xpath=//input[@id='submit-login_button']", "xpath:attributes"],
+        ["xpath=//div[@id='login_body']/div[2]/div/form/div[4]/input", "xpath:idRelative"],
+        ["xpath=//div[4]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "efa1c64e-96f4-4643-8209-5040a1aac3a5",
+      "comment": "",
+      "command": "storeVisible",
+      "target": "id=ui-id-1",
+      "targets": [
+        ["id=ui-id-1", "id"],
+        ["css=#ui-id-1", "css:finder"],
+        ["css=#ui-id-1", "css"],
+        ["xpath=//span[@id='ui-id-1']", "xpath:attributes"],
+        ["xpath=//div[8]/div/span", "xpath:position"]
+      ],
+      "value": "VISIBLE"
+    }, {
+      "id": "2f87536e-61e1-4ac2-b674-f6e68176e976",
+      "comment": "",
+      "command": "if",
+      "target": "${VISIBLE}",
+      "targets": [
+      ],
+      "value": ""
+    }, {
+      "id": "2f87536e-61e1-4ac2-b674-f6e68176e976",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=ui-id-1",
+      "targets": [
+        ["id=ui-id-1", "id"],
+        ["css=#ui-id-1", "css:finder"],
+        ["css=#ui-id-1", "css"],
+        ["xpath=//span[@id='ui-id-1']", "xpath:attributes"],
+        ["xpath=//div[8]/div/span", "xpath:position"]
+      ],
+      "value": "Pandora FMS instance identification wizard"
+    }, {
+      "id": "cbdb5bab-7696-4136-9d2b-b6b15608623d",
+      "comment": "",
+      "command": "click",
+      "target": "id=button-cancel",
+      "targets": [
+        ["id=button-cancel", "id"],
+        ["name=cancel", "name"],
+        ["css=#button-cancel", "css:finder"],
+        ["css=#button-cancel", "css"],
+        ["xpath=//input[@id='button-cancel']", "xpath:attributes"],
+        ["xpath=//div[@id='login_id_dialog']/div[3]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d872ad06-e257-4ffe-8d6a-36737190645f",
+      "comment": "",
+      "command": "end",
+      "target": "",
+      "targets": [
+      ],
+      "value": ""
+    }, {
+      "id": "d872ad06-e257-4ffe-8d6a-36737190645f",
+      "comment": "",
+      "command": "waitForElementNotVisible",
+      "target": "id=ui-id-1",
+      "targets": [
+        ["id=ui-id-1", "id"],
+        ["css=#ui-id-1", "css:finder"],
+        ["css=#ui-id-1", "css"],
+        ["xpath=//span[@id='ui-id-1']", "xpath:attributes"],
+        ["xpath=//div[8]/div/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a5b4510e-c37f-4371-9c35-bb3a1c3445aa",
+      "comment": "",
+      "command": "assertText",
+      "target": "linkText=(admin)",
+      "targets": [
+        ["linkText=(admin)", "linkText"],
+        ["css=#header_table-0-7 > .white_bold", "css:finder"],
+        ["css=a.white_bold", "css"],
+        ["xpath=//a[contains(text(),'(admin)')]", "xpath:link"],
+        ["xpath=//td[@id='header_table-0-7']/a", "xpath:idRelative"],
+        ["xpath=(//a[contains(@href, 'index.php?sec=workspace&sec2=operation/users/user_edit')])[2]", "xpath:href"],
+        ["xpath=//td[12]/a", "xpath:position"]
+      ],
+      "value": "(admin)"
+    }, {
+      "id": "0e5b72f1-987a-4b06-882b-ac971c46fe4d",
+      "comment": "",
+      "command": "click",
+      "target": "css=#header_table-0-0 .bot",
+      "targets": [
+        ["css=#header_table-0-0 .bot", "css:finder"],
+        ["css=img.bot.forced_title", "css"],
+        ["xpath=//img[@alt='cross']", "xpath:img"],
+        ["xpath=//td[@id='header_table-0-0']/a/img", "xpath:idRelative"],
+        ["xpath=//td[5]/a/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ce3a6ee7-361c-4c3e-80fe-838e6d1d46f3",
+      "comment": "",
+      "command": "storeVisible",
+      "target": "id=clippy_head_title",
+      "targets": [
+        ["id=clippy_head_title", "id"],
+        ["css=#clippy_head_title", "css:finder"],
+        ["css=#clippy_head_title", "css"],
+        ["xpath=//div[@id='clippy_head_title']", "xpath:attributes"],
+        ["xpath=//div[10]/div/div/div", "xpath:position"]
+      ],
+      "value": "VISIBLE"
+    }, {
+      "id": "ce3a6ee7-361c-4c3e-80fe-838e6d1d46f3",
+      "comment": "",
+      "command": "if",
+      "target": "${VISIBLE}",
+      "targets": [
+      ],
+      "value": ""
+    }, {
+      "id": "ce3a6ee7-361c-4c3e-80fe-838e6d1d46f3",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=clippy_head_title",
+      "targets": [
+        ["id=clippy_head_title", "id"],
+        ["css=#clippy_head_title", "css:finder"],
+        ["css=#clippy_head_title", "css"],
+        ["xpath=//div[@id='clippy_head_title']", "xpath:attributes"],
+        ["xpath=//div[10]/div/div/div", "xpath:position"]
+      ],
+      "value": "Pandora FMS assistant"
+    }, {
+      "id": "c20cf14b-89d1-4fc5-bdbc-d0beacd6ee19",
+      "comment": "Close Wizard",
+      "command": "click",
+      "target": "linkText=End wizard",
+      "targets": [
+        ["linkText=End wizard", "linkText"],
+        ["css=.introjs-button", "css:finder"],
+        ["css=a.introjs-button.introjs-skipbutton", "css"],
+        ["xpath=//a[contains(text(),'End wizard')]", "xpath:link"],
+        ["xpath=(//a[contains(@href, 'javascript:void(0);')])[2]", "xpath:href"],
+        ["xpath=//div[4]/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ce3a6ee7-361c-4c3e-80fe-838e6d1d46f3",
+      "comment": "",
+      "command": "end",
+      "target": "",
+      "targets": [
+      ],
+      "value": ""
+    }, {
+      "id": "165a6ffa-909e-4a13-9274-5af693b2106f",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.nf",
+      "targets": [
+        ["css=.nf", "css:finder"],
+        ["css=div.nf", "css"],
+        ["xpath=//div[@id='main']/div[2]", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/div[2]", "xpath:position"]
+      ],
+      "value": "There are no servers registered on the database."
+    }, {
+      "id": "b615c762-1da1-4831-8dc9-cc39064a0650",
+      "comment": "wait for logout button clickable",
+      "command": "waitForEval",
+      "target": "var btn=document.querySelector('#header_table-0-5 .bot'), rect=btn.getBoundingClientRect();btn === document.elementFromPoint(rect.left,rect.top)",
+      "targets": [
+      ],
+      "value": "true"
+    }, {
+      "id": "b615c762-1da1-4831-8dc9-cc39064a0650",
+      "comment": "Logout",
+      "command": "clickAndWait",
+      "target": "css=#header_table-0-5 .bot",
+      "targets": [
+        ["css=#header_table-0-5 .bot", "css:finder"],
+        ["css=#header_table-0-5 > a.white > img.bot.forced_title", "css"],
+        ["xpath=//img[@alt='Logout']", "xpath:img"],
+        ["xpath=//td[@id='header_table-0-5']/a/img", "xpath:idRelative"],
+        ["xpath=//td[10]/a/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "349ec856-524b-4fe8-b614-97032bc81982",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=ui-id-1",
+      "targets": [
+        ["id=ui-id-1", "id"],
+        ["css=#ui-id-1", "css:finder"],
+        ["css=#ui-id-1", "css"],
+        ["xpath=//span[@id='ui-id-1']", "xpath:attributes"],
+        ["xpath=//div[3]/div/span", "xpath:position"]
+      ],
+      "value": "Logged out"
+    }, {
+      "id": "cbd08686-c7c4-489f-ad39-109b2d7f77e9",
+      "comment": "",
+      "command": "click",
+      "target": "id=submit-hide-login-logout",
+      "targets": [
+        ["id=submit-hide-login-logout", "id"],
+        ["name=hide-login-logout", "name"],
+        ["css=#submit-hide-login-logout", "css:finder"],
+        ["css=#submit-hide-login-logout", "css"],
+        ["xpath=//input[@id='submit-hide-login-logout']", "xpath:attributes"],
+        ["xpath=//div[@id='login_logout']/div/div[2]/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "2dfca722-2b0e-4711-9813-674ed3b2031a",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["0ba474c0-096a-40ee-b201-812139a0d44b"]
+  }],
+  "urls": ["http://127.0.0.1/"],
+  "plugins": []
+}

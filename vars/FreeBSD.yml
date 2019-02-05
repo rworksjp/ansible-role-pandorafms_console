@@ -1,0 +1,7 @@
+---
+pandorafms_console_package_name: pandora_console
+pandorafms_console_www_user: www
+pandorafms_console_www_group: www
+pandorafms_console_docroot: /usr/local/www/pandora_console
+pandorafms_console_mysql_python_package: 'py{{ "%s%s"|format(ansible_python.version.major,ansible_python.version.micro) }}-pymsql'
+pandorafms_console_web_service_name: apache24

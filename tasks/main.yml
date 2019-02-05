@@ -1,0 +1,38 @@
+---
+# tasks file for roles/pandorafms_console
+
+- name: Import platform specific variables
+  include_vars:
+    file: "{{ ansible_os_family }}.yml"
+  when: ansible_os_family in ["FreeBSD","RedHat"]
+
+- name: Install PHP 7 when Pandora FMS version is grater than 7.0NG.728
+  when: >
+      pandorafms_console_version is none
+      or pandorafms_console_version is version("7.0NG.728", ">")
+  block:
+  - name: Ensure php 7 is installed (for RedHat)
+    import_tasks: install-php7-RedHat.yml
+    when: ansible_os_family == "RedHat"
+
+- name: Ensure pandorafms_console is installed
+  package:
+    name: '{{ pandorafms_console_package }}'
+    state: present
+
+- name: Import initial configuration tasks
+  import_tasks: initial-setup.yml
+  when: pandorafms_console_do_initial_configuration
+
+- name: Ensure web service is enabled/disabled according to `pandorafms_console_web_service_enabled' variable
+  service:
+    name: '{{ pandorafms_console_web_service_name }}'
+    enabled: '{{ pandorafms_console_web_service_enabled }}'
+    state: started
+  when: pandorafms_console_web_service_enabled is defined
+
+- name: Ensure state of web service is set according to `pandorafms_console_web_service_state' variable
+  service:
+    name: '{{ pandorafms_console_web_service_name }}'
+    state: '{{ pandorafms_console_web_service_state }}'
+  when: pandorafms_console_web_service_state is defined

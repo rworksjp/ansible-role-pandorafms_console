@@ -1,0 +1,7 @@
+---
+pandorafms_console_package_name: pandorafms_console
+pandorafms_console_www_user: apache
+pandorafms_console_www_group: apache
+pandorafms_console_docroot: /var/www/html/pandora_console
+pandorafms_console_mysql_python_package: MySQL-python
+pandorafms_console_web_service_name: httpd

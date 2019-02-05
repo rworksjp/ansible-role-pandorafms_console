@@ -1,0 +1,55 @@
+---
+<%
+  REPO_ROOT_DIR = File.expand_path(File.dirname(__FILE__))
+  TEST_TMPDIR = File.join(REPO_ROOT_DIR,"test","cache")
+  INSPEC_ATTR_FILE = File.join(TEST_TMPDIR, "ansible_facts", "%{platform}.yml")
+%>
+driver:
+  name: vagrant
+  <% if File.exist?('/proc/version') and File.read('/proc/version').match(/Microsoft|WSL/) %>
+  cache_directory: false
+  synced_folders:
+    - [".", "/vagrant", 'create: true, type: "rsync", rsync__exclude: [".*", "test/cache"]']
+  <% end %>
+
+provisioner:
+  name: ansible_push
+  chef_bootstrap_url: false
+  extra_vars:
+    repo_root_dir: <%= REPO_ROOT_DIR %>
+    test_cache_dir: <%= TEST_TMPDIR %>
+    http_service_name: httpd
+
+verifier:
+  name: inspec
+
+platforms:
+#  - name: ubuntu-16.04
+  - name: centos-7
+    provisioner:
+      extra_vars:
+        mysql_package_name: mariadb-server
+        mysql_service_name: mariadb
+  - name: centos-6
+    provisioner:
+      extra_vars:
+        mysql_package_name: mysql-server
+        mysql_service_name: mysqld
+#  - name: freebsd-12
+#  provision: true
+#  vagrantfiles:
+#    - test/Vagrantfile.bootstrap-freebsd.rb
+#  - name: freebsd-11
+
+suites:
+  - name: default
+    driver:
+      pre_create_command: ansible-galaxy install -r test/integration/default/requirements.yml -p test/cache/roles
+    provisioner:
+      playbook: test/integration/default/ansible.yml
+      ansible_config: test/integration/default/ansible.cfg
+#      idempotency_test: true
+    verifier:
+      attrs:
+        - <%= INSPEC_ATTR_FILE %>
+

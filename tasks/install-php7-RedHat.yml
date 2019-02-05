@@ -1,0 +1,29 @@
+---
+# may be not necessary
+#- name: Ensure epel-release is installed
+#  package:
+#    name: epel-release
+
+- name: Ensure remi-release is installed
+  package:
+    name: 'http://rpms.remirepo.net/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm'
+
+- name: Ensure PHP 7.2 packages are installed from remi-php72 repository
+  package:
+    name:
+      - php
+      - php-mcrypt
+      - php-cli
+      - php-gd
+      - php-curl
+      - php-mysql
+      - php-ldap
+      - php-zip
+      - php-fileinfo
+      - php-snmp
+      - php-mbstring
+      - php-pecl-zip
+      - php-xmlrpc
+      - libxslt
+      - php-xml
+    enablerepo: remi-php72

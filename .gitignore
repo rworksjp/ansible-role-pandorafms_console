@@ -1,0 +1,5 @@
+.bundle
+.kitchen
+.python-version
+Gemfile.lock
+test/cache
