@@ -58,7 +58,7 @@
     group: '{{ pandorafms_console_www_group | default(mandatory) }}'
     mode: 0600
     marker: '<?php /* {mark} ANSIBLE MANAGED BLOCK */ ?>'
-    block: '{{ lookup("file", "config-block.php" }}'
+    block: '{{ lookup("file", "config-block.php") }}'
 
 - name: Ensure install.php not exist
   file:
