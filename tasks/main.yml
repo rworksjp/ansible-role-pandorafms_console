@@ -19,10 +19,13 @@
   package:
     name: '{{ pandorafms_console_package }}'
     state: present
+  register: r
+  until: r is success
+  retries: 3
 
 - name: Import initial configuration tasks
   import_tasks: initial-setup.yml
-  when: pandorafms_console_do_initial_configuration
+  when: not pandorafms_console_skip_initial_configuration
 
 - name: Ensure web service is enabled/disabled according to `pandorafms_console_web_service_enabled' variable
   service:

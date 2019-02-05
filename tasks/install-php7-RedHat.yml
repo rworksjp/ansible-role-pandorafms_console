@@ -7,6 +7,9 @@
 - name: Ensure remi-release is installed
   package:
     name: 'http://rpms.remirepo.net/enterprise/remi-release-{{ ansible_distribution_major_version }}.rpm'
+  register: r
+  until: r is success
+  retries: 3
 
 - name: Ensure PHP 7.2 packages are installed from remi-php72 repository
   package:
@@ -27,3 +30,6 @@
       - libxslt
       - php-xml
     enablerepo: remi-php72
+  register: r
+  until: r is success
+  retries: 3

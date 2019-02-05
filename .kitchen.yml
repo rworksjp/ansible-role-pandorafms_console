@@ -48,7 +48,7 @@ suites:
     provisioner:
       playbook: test/integration/default/ansible.yml
       ansible_config: test/integration/default/ansible.cfg
-#      idempotency_test: true
+      idempotency_test: true
     verifier:
       attrs:
         - <%= INSPEC_ATTR_FILE %>

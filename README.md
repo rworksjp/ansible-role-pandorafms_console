@@ -1,30 +1,31 @@
-Ansible Role pandorafms\_console
+Ansible Role `pandorafms_console`
 =========
 
-An ansible role to install Pandora FMS consloe and do it's initial configuration.
+An ansible role to install Pandora FMS console and do it's [initial configuration](https://wiki.pandorafms.com/index.php?title=Pandora:Documentation_en:Installing#Initial_Console_Configuration).
 
 Requirements
 ------------
 
-Running MySQL instance if you want to do initial configuration by this role.
+A running MySQL instance if you want to do initial configuration by this role.
 
 Role Variables
 --------------
 
-variable | default | description
+Variable | Default | Description
 ---------|---------|------------
-pandorafms\_console\_version | `null` (install latest package from package repository) | The version of the Pandora FMS console to install.
-pandorafms\_console\_do\_initial\_configuration | `no` | if set to `yes`, create database (if absent) and user for Pandora FMS on MySQL instance and generate config file of the Pandora FMS console
-pandorafms\_console\_force\_init\_db | `no` | if set to `yes`, existence pandorafms database is dropped
-pandorafms\_db\_privileged\_user\_name | root | The user name can create db and user
-pandorafms\_db\_privileged\_user\_password | not defined | The password of the `pandorafms_db_privileged_user_name`
-pandorafms\_dbhost| localhost | IP address or hostname which Pandora FMS database is FIXME:
-pandorafms\_dbname| pandora | name of Pandora FMS database
-pandorafms\_dbuser| pandora | The username used in the Pandora database connetion
-pandorafms\_dbpass| pandora | The password of the `pandorafms_dbuser`
-pandorafms\_dbport| not defined | The port number to used for db connection
-pandorafms\_console\_homeurl | /pandora\_console |
-pandorafms\_console\_homeurl\_static | /pandora\_console |
+`pandorafms_console_version` | `null` | The version of the Pandora FMS console to install. When `null`, latest package on the repository will be installed.
+`pandorafms_console_skip_initial_configuration` | `false` | When `true`, only pacage installation will be performed. 
+`pandorafms_db_privileged_user_name` | 'root' | The name of the user with permission to create database and user
+`pandorafms_db_privileged_user_password` | -  | The password of the user specified by `pandorafms_db_privileged_user_name`.
+`pandorafms_dbhost`| 'localhost' | The IP address or hostname of the DB instance to create database for Pandora FMS.
+`pandorafms_dbname`| 'pandora'   | The name of the Pandora FMS database.
+`pandorafms_dbuser`| 'pandora'   | The username for the Pandora FMS database.
+`pandorafms_dbpass`| 'pandora'   | The password of the `pandorafms_dbuser`
+`pandorafms_dbport`| -           | The port number used for connecting to database.
+`pandorafms_console_homeurl`        | '/pandora\_console' |
+`pandorafms_console_homeurl_static` | '/pandora\_console' |
+`pandorafms_console_web_service_enabled`| - | When set to `true` or `false`, web serivce (e.g. httpd on RedHat platform) will be enabled/diable.
+`pandorafms_console_web_service_state`  | - | When set, state of web serivce (e.g. httpd on RedHat platform) will be changed to specified state.
 
 Dependencies
 ------------
@@ -35,10 +36,19 @@ Example Playbook
 ----------------
 
 ```
+# Only install package
 - hosts: servers
   roles:
     - role: rworksjp.pandorafms_console
-      pandorafms_console_do_initial_setup: yes
+      pandorafms_console_skip_initial_configuration: yes
+
+# Install Pandora FMS console 7.0NG.719, enable and start web service
+- hosts: servers
+  roles:
+    - role: rworksjp.pandorafms_console
+      pandorafms_console_version: 7.0NG.719
+      pandorafms_console_web_service_enabled: true
+      pandorafms_console_web_service_state: started
 ```
 
 License
