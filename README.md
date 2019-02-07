@@ -35,7 +35,7 @@ Dependencies
 Example Playbook
 ----------------
 
-```
+```yml
 # Only install package
 - hosts: servers
   roles:
