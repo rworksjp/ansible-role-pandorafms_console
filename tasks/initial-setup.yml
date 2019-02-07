@@ -10,11 +10,11 @@
 
 - name: Ensure Pandora FMS database exists
   mysql_db:
-    name: '{{ pandorafms_dbname }}'
-    login_user: '{{ pandorafms_db_privileged_user_name }}'
-    login_password: '{{ pandorafms_db_privileged_user_password | default(omit) }}'
-    login_host: '{{ pandorafms_dbhost }}'
-    login_port: '{{ pandorafms_dbport | default(omit) }}'
+    name: '{{ pandorafms_console_dbname }}'
+    login_user: '{{ pandorafms_console_db_privileged_user_name }}'
+    login_password: '{{ pandorafms_console_db_privileged_user_password | default(omit) }}'
+    login_host: '{{ pandorafms_console_dbhost }}'
+    login_port: '{{ pandorafms_console_dbport }}'
   register: pandora_db_present
   notify: Ensure Pandora FMS db schema and initial data are imported
 
@@ -23,13 +23,13 @@
 
 - name: Ensure database user for Pandora FMS exists
   mysql_user:
-    name: '{{ pandorafms_dbuser }}'
-    password: '{{ pandorafms_dbpass }}'
-    priv: '*.*:USAGE/{{ pandorafms_dbname }}.*:ALL'
-    login_user: '{{ pandorafms_db_privileged_user_name }}'
-    login_password: '{{ pandorafms_db_privileged_user_password | default(omit) }}'
-    login_host: '{{ pandorafms_dbhost }}'
-    login_port: '{{ pandorafms_dbport | default(omit) }}'
+    name: '{{ pandorafms_console_dbuser }}'
+    password: '{{ pandorafms_console_dbpass }}'
+    priv: '*.*:USAGE/{{ pandorafms_console_dbname }}.*:ALL'
+    login_user: '{{ pandorafms_console_db_privileged_user_name }}'
+    login_password: '{{ pandorafms_console_db_privileged_user_password | default(omit) }}'
+    login_host: '{{ pandorafms_console_dbhost }}'
+    login_port: '{{ pandorafms_console_dbport }}'
 
 - name: Ensure libselinux-python package is installed
   package:
@@ -58,7 +58,7 @@
     group: '{{ pandorafms_console_www_group | default(mandatory) }}'
     mode: 0600
     marker: '<?php /* {mark} ANSIBLE MANAGED BLOCK */ ?>'
-    block: '{{ lookup("file", "config-block.php") }}'
+    block: '{{ lookup("template", "config-block.php.j2") }}'
 
 - name: Ensure install.php not exist
   file:

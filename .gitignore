@@ -1,5 +1,7 @@
 .bundle
 .kitchen
 .python-version
+.ruby-version
 Gemfile.lock
 test/cache
+*.retry

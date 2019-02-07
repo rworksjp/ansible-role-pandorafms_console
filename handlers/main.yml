@@ -3,14 +3,14 @@
 
 - name: Ensure Pandora FMS db schema and initial data are imported
   mysql_db:
-    name: '{{ pandorafms_dbname }}'
+    name: '{{ pandorafms_console_dbname }}'
     state: import
     encoding: latin1
     target: '{{ item }}'
-    login_user: '{{ pandorafms_db_privileged_user_name }}'
-    login_password: '{{ pandorafms_db_privileged_user_password | default(omit) }}'
-    login_host: '{{ pandorafms_dbhost }}'
-    login_port: '{{ pandorafms_dbport | default(omit) }}'
+    login_user: '{{ pandorafms_console_db_privileged_user_name }}'
+    login_password: '{{ pandorafms_console_db_privileged_user_password | default(omit) }}'
+    login_host: '{{ pandorafms_console_dbhost }}'
+    login_port: '{{ pandorafms_console_dbport }}'
   when: pandora_db_present.changed
   loop:
     - '{{ pandorafms_console_docroot }}/pandoradb.sql'

@@ -1,4 +1,4 @@
 ---
 # vars file for roles/pandorafms_console
 pandorafms_console_package:
-  '{{ [pandorafms_console_package_name] | union([pandorafms_console_version]) | reject("none") | join("-") }}'
+  '{{ [pandorafms_console_package_name] | union([pandorafms_console_version|default(None)]) | reject("none") | join("-") }}'

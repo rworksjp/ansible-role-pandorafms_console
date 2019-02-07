@@ -2,100 +2,77 @@
 - name: prepare for executing role
   hosts: all
   become: yes
-  pre_tasks:
-    - name: some version reralted assertions
-      assert:
-        that:
-          - '"7.0NG.730" is version("7.0NG.729", ">")'
-          - '"7.0NG.730" is version("7.0NG.730", "=")'
-          - pandorafms_console_version is defined
-          - pandorafms_console_version is none
-          - mysql_package_name is defined
-          - mysql_service_name is defined
-
-    - name: assert package name
-      vars:
-        pandorafms_console_package_name: dummy
-      block:
-      - debug: var=pandorafms_console_version
-      - name: assert package name (the case version is none)
-        assert:
-          that:
-          - pandorafms_console_package == pandorafms_console_package_name
-        when: pandorafms_console_version is none
-
-      - name: assert package name (the case version is not none)
-        assert:
-          that:
-          - 'pandorafms_console_package == pandorafms_console_package_name + "-" + pandorafms_console_version'
-        when: pandorafms_console_version is not none
-
-    - name: install mysql
-      package:
-        name: '{{ mysql_package_name }}'
-
-    - name: start mysql service
-      service:
-        name: '{{ mysql_service_name }}'
-        state: started
-        enabled: yes
-
-  roles:
-    - role: '{{ repo_root_dir }}'
-      pandorafms_console_do_initial_configuration: yes
-      pandorafms_console_web_service_enabled: yes
-      pandorafms_console_web_service_state: started
-
-  tasks:
-    - name: start web server
-      service:
-        name: '{{ http_service_name }}'
-        state: started
-        enabled: yes
-
-- name: prepare for test
-  hosts: all
-  become: yes
   vars:
     phantomjs_download_url: https://bitbucket.org/ariya/phantomjs/downloads
-    phantomjs_install_prefix: /opt/phantomjs
+    phantomjs_install_prefix: /tmp/phantomjs
+  pre_tasks:
+  - name: some version reralted assertions
+    assert:
+      that:
+        - mysql_package_name is defined
+        - mysql_service_name is defined
+
+  - name: install mysql
+    package:
+      name: '{{ mysql_package_name }}'
+
+  - name: start mysql service
+    service:
+      name: '{{ mysql_service_name }}'
+      state: started
+      enabled: yes
+
   roles:
-    - role: diodonfrost.java
-    - role: koichirok.selenese-runner-java
+  - role: '{{ repo_root_dir }}'
+    pandorafms_console_web_service_enabled: yes
+    pandorafms_console_web_service_state: started
+
+  - role: diodonfrost.java
+  - role: koichirok.selenese-runner-java
 
   tasks:
-    - name: Ensure /opt/phantomjs exists
-      file:
-        path: '{{ phantomjs_install_prefix }}'
-        state: directory
+  - name: ensure dest dir exist for exporting ansible variables
+    local_action:
+      module: file
+      path: '{{ test_cache_dir }}/ansible_facts/'
+      state: directory
+    become: no
 
-    - name: Ensure phantomjs is installed
-      unarchive:
-        src: '{{ phantomjs_download_url }}/phantomjs-2.1.1-linux-{{ ansible_userspace_architecture }}.tar.bz2'
-        dest: /opt/phantomjs/
-        extra_opts:
-          - '--strip-components=1'
-        copy: no
-      when: ansible_system == "Linux"
+  #https://coderwall.com/p/13lh6w/dump-all-variables
+  - name: export ansible variables
+    local_action:
+      module: copy
+      dest: '{{ test_cache_dir }}/ansible_facts/{{ inventory_hostname }}.yml.j2'
+      content: '{{ vars | to_nice_yaml }}'
+    changed_when: false # force not changed for idempotent test
+    become: no
 
-    - name: become=no block
-      become: no
-      block:
-      - name: ensure dest dir exist for exporting ansible variables
-        local_action:
-          module: file
-          path: '{{ test_cache_dir }}/ansible_facts/'
-          state: directory
+  - name: create templated ansible variables
+    local_action:
+      module: template
+      src: '{{ test_cache_dir }}/ansible_facts/{{ inventory_hostname }}.yml.j2'
+      dest: '{{ test_cache_dir }}/ansible_facts/{{ inventory_hostname }}.yml'
+    changed_when: false # force not changed for idempotent test
+    become: no
 
-      #https://coderwall.com/p/13lh6w/dump-all-variables
-      - name: export ansible variables
-        local_action:
-          module: copy
-          dest: '{{ test_cache_dir }}/ansible_facts/{{inventory_hostname}}.yml'
-          content: '{{ vars | to_nice_yaml }}'
-        changed_when: false # always not changed for idempotent test
+  - name: copy selenium test file
+    copy:
+      src: '{{ playbook_dir }}/test.side'
+      dest: /tmp/
+    become: no
 
-      - name: copy selenium test file
-        copy:
-          src: '{{ playbook_dir }}/test.side'
-          dest: /tmp/
+  - name: Ensure /opt/phantomjs exists
+    file:
+      path: '{{ phantomjs_install_prefix }}'
+      state: directory
+    become: no
+
+  - name: Ensure phantomjs is installed
+    unarchive:
+      src: '{{ phantomjs_download_url }}/phantomjs-2.1.1-linux-{{ ansible_userspace_architecture }}.tar.bz2'
+      dest: '{{ phantomjs_install_prefix }}'
+      extra_opts:
+        - '--strip-components=1'
+      copy: no
+    when: ansible_system == "Linux"
+    become: no

@@ -1,0 +1,13 @@
+<?php
+		$config["dbtype"] = "mysql";	//DB type (mysql, postgresql...in future others)
+		$config["dbname"]="{{ pandorafms_console_dbname }}";	// MySQL DataBase name
+		$config["dbuser"]="{{ pandorafms_console_dbuser }}";	// DB User
+		$config["dbpass"]="{{ pandorafms_console_dbpass }}";	// DB Password
+		$config["dbhost"]="{{ pandorafms_console_dbhost }}";	// DB Host
+{% if pandorafms_console_dbport != omit %}
+		$config["dbport"]="{{ pandorafms_console_dbport }}";	// DB Port
+{% endif %}
+		$config["homedir"]="{{ pandorafms_console_docroot }}/";	// Config homedir
+		$config["homeurl"]="{{ pandorafms_console_homeurl }}/";			// Base URL
+		$config["homeurl_static"]="{{ pandorafms_console_homeurl_static }}/";		// Don't  delete
+?>

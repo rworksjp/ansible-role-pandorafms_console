@@ -15,13 +15,13 @@ Variable | Default | Description
 ---------|---------|------------
 `pandorafms_console_version` | `null` | The version of the Pandora FMS console to install. When `null`, latest package on the repository will be installed.
 `pandorafms_console_skip_initial_configuration` | `false` | When `true`, only pacage installation will be performed. 
-`pandorafms_db_privileged_user_name` | 'root' | The name of the user with permission to create database and user
-`pandorafms_db_privileged_user_password` | -  | The password of the user specified by `pandorafms_db_privileged_user_name`.
-`pandorafms_dbhost`| 'localhost' | The IP address or hostname of the DB instance to create database for Pandora FMS.
-`pandorafms_dbname`| 'pandora'   | The name of the Pandora FMS database.
-`pandorafms_dbuser`| 'pandora'   | The username for the Pandora FMS database.
-`pandorafms_dbpass`| 'pandora'   | The password of the `pandorafms_dbuser`
-`pandorafms_dbport`| -           | The port number used for connecting to database.
+`pandorafms_console_db_privileged_user_name` | 'root' | The name of the user with permission to create database and user
+`pandorafms_console_db_privileged_user_password` | -  | The password of the user specified by `pandorafms_console_db_privileged_user_name`.
+`pandorafms_console_dbhost`| `{{ pandorafms_dbhost | default('localhost') }}` | The IP address or hostname of the DB instance to create database for Pandora FMS.
+`pandorafms_console_dbname`| `{{ pandorafms_dbname | default('pandora') }}`   | The name of the Pandora FMS database.
+`pandorafms_console_dbuser`| `{{ pandorafms_dbuser | default('pandora') }}`   | The username for the Pandora FMS database.
+`pandorafms_console_dbpass`| `{{ pandorafms_dbpass | default('pandora') }}`   | The password of the `pandorafms_console_dbuser`
+`pandorafms_console_dbport`| `{{ pandorafms_dbport | default(omit) }}`        | The port number used for connecting to database.
 `pandorafms_console_homeurl`        | '/pandora\_console' |
 `pandorafms_console_homeurl_static` | '/pandora\_console' |
 `pandorafms_console_web_service_enabled`| - | When set to `true` or `false`, web serivce (e.g. httpd on RedHat platform) will be enabled/diable.

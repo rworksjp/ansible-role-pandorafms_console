@@ -2,14 +2,14 @@
 # defaults file for pandorafms_console
 
 pandorafms_console_skip_initial_configuration: false
-pandorafms_console_version: null
+#pandorafms_console_version:
 pandorafms_console_homeurl: /pandora_console
 pandorafms_console_homeurl_static: /pandora_console
 
-pandorafms_db_privileged_user_name: root
-#pandorafms_db_privileged_user_password: not defiend
-pandorafms_dbname: pandora
-pandorafms_dbuser: pandora
-pandorafms_dbpass: pandora
-pandorafms_dbhost: localhost
-#pandorafms_dbport: not defined
+pandorafms_console_db_privileged_user_name: root
+#pandorafms_console_db_privileged_user_password: not defiend
+pandorafms_console_dbname: '{{ pandorafms_dbname | default("pandora") }}'
+pandorafms_console_dbuser: '{{ pandorafms_dbuser | default("pandora") }}'
+pandorafms_console_dbpass: '{{ pandorafms_dbpass | default("pandora") }}'
+pandorafms_console_dbhost: '{{ pandorafms_dbhost | default("localhost") }}'
+pandorafms_console_dbport: '{{ pandorafms_dbport | default(omit) }}'
