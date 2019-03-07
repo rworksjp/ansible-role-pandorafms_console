@@ -23,6 +23,12 @@
   until: r is success
   retries: 3
 
+- name: Ensure apache config file for pandora_console exist
+  copy:
+    src: httpd.conf
+    dest: /etc/httpd/conf.d/pandora_console.conf
+  when: ansible_os_family == "RedHat"
+
 - name: Import initial configuration tasks
   import_tasks: initial-setup.yml
   when: not pandorafms_console_skip_initial_configuration
